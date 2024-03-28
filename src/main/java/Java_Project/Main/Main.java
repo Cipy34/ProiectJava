@@ -16,9 +16,10 @@ public class Main {
         users.put("Cipy", "123");
         users.put("Cipy34", "123");
 
-        User u = new User();
+        User currentuser = new User();
 
-        Authentication au = new Command(users, u);
+        Authentication au = new Command(users, currentuser);
         ((Command) au).run();
+
     }
 }

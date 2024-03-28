@@ -27,14 +27,15 @@ public class Command extends Authentication{
                 }
 
                 if(command.equals("register")){
-
+                    Register r = new Register(users, currentuser, username, password);
+                    r.run();
                 }
 
                 break;
             }
 
             case Authentificated -> {
-
+                
                 break;
             }
 

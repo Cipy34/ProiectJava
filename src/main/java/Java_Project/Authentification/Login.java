@@ -20,6 +20,8 @@ public final class Login extends Authentication {
         if(users.containsKey(username) &&
                 users.get(username).equals(password)){
             currentuser.setRole(Role.Authentificated);
+            currentuser.setPassword(password);
+            currentuser.setUsername(username);
         }
         else {
             throw new LoginException("Username or Password Incorrect!");
