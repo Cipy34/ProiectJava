@@ -17,7 +17,7 @@ public class Register extends Authentication{
     }
 
     @Override
-    void run() {
+    public String run() {
         for(User user : users){
             if(!user.getUsername().equals(username)) {
                 currentuser.setUsername(username);
@@ -25,7 +25,10 @@ public class Register extends Authentication{
                 currentuser.setRole(Role.Authentificated);
 
                 users.add(new User(username, password, Role.Authentificated));
+                return "Registered account with user name " + username + ". ";
             }
         }
+
+        return "User with given username already exists! Please try again!";
     }
 }

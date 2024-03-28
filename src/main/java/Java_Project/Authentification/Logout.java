@@ -12,9 +12,11 @@ public class Logout extends Authentication{
     }
 
     @Override
-    void run() {
+    public String run() {
         currentuser.setRole(Role.Anonymous);
         currentuser.setPassword("");
         currentuser.setUsername("");
+
+        return "Successfully logged out.";
     }
 }

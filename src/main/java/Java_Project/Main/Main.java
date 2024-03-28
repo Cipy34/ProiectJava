@@ -17,11 +17,7 @@ public class Main {
         User currentuser = new User();
 
         Authentication au = new Command(users, currentuser);
-        ((Command) au).run();
-
-        System.out.println(currentuser.getRole());
-        ((Command) au).run();
-
-        System.out.println(users.get(0).getRole());
+        System.out.println(((Command) au).run());
+        System.out.println(((Command) au).run());
     }
 }

@@ -17,13 +17,17 @@ public final class Login extends Authentication {
     }
 
     @Override
-    public void run() {
+    public String run() {
         for(User user : users){
             if(user.getUsername().equals(username) && user.getPassword().equals(password)){
                 currentuser.setRole(user.getRole());
                 currentuser.setUsername(username);
                 currentuser.setPassword(password);
+
+                return "You are now authenticated as " + username + ".";
             }
         }
+
+        return "Username or password is invalid. Please try again!";
     }
 }

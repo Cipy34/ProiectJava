@@ -14,11 +14,14 @@ public class Promote extends Authentication{
     }
 
     @Override
-    void run() {
+    public String run() {
         for(User user : users){
             if(user.getUsername().equals(username)){
                 user.setRole(Role.Administrator);
+                return username + " is now an administrator!";
             }
         }
+
+        return "Specified user does not exist!";
     }
 }

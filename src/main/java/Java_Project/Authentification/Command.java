@@ -12,24 +12,29 @@ public class Command extends Authentication{
     }
 
     @Override
-    public void run() {
+    public String run() {
         switch (currentuser.getRole()){
             case Anonymous -> {
                 Scanner scanner = new Scanner(System.in);
                 String command, username, password;
+                String sentence = scanner.nextLine();
 
-                command = scanner.next();
-                username = scanner.next();
-                password = scanner.next();
+                String[] commands = sentence.split("\\s+");
+                if(commands.length != 3)
+                    return "Invalid number of arguments!";
+
+                command = commands[0];
+                username = commands[1];
+                password = commands[2];
 
                 if(command.equals("login")){
                     Login l = new Login(users, currentuser, username, password);
-                    l.run();
+                    System.out.println(l.run());
                 }
 
                 if(command.equals("register")){
                     Register r = new Register(users, currentuser, username, password);
-                    r.run();
+                    System.out.println(r.run());
                 }
 
                 break;
@@ -38,11 +43,16 @@ public class Command extends Authentication{
             case Authentificated -> {
                 Scanner scanner = new Scanner(System.in);
                 String command;
+                String sentence = scanner.nextLine();
 
-                command = scanner.next();
+                String[] commands = sentence.split("\\s+");
+                if(commands.length != 1)
+                    return "Invalid number of arguments!";
+
+                command = commands[0];
                 if(command.equals("logout")){
                     Logout l = new Logout(users, currentuser);
-                    l.run();
+                    System.out.println(l.run());
                 }
                 break;
             }
@@ -51,20 +61,31 @@ public class Command extends Authentication{
                 Scanner scanner = new Scanner(System.in);
                 String command;
                 String username;
+                String sentence = scanner.nextLine();
 
-                command = scanner.next();
+                String[] commands = sentence.split("\\s+");
+
+                command = commands[0];
+
                 if(command.equals("logout")){
+                    if(commands.length != 1)
+                        return "Invalid number of arguments!";
+
                     Logout l = new Logout(users, currentuser);
-                    l.run();
+                    System.out.println(l.run());
                 }
 
                 if(command.equals("promote")){
-                    username = scanner.next();
+                    if(commands.length != 2)
+                        return "Invalid number of arguments!";
+
+                    username = commands[1];
                     Promote p = new Promote(users, currentuser, username);
-                    p.run();
+                    System.out.println(p.run());
                 }
                 break;
             }
         }
+        return "";
     }
 }
