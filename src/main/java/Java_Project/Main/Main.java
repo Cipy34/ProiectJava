@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         Map<String, String> users = new HashMap<>();
         users.put("Cipy", "123");
         users.put("Cipy34", "123");
@@ -19,6 +18,9 @@ public class Main {
         User currentuser = new User();
 
         Authentication au = new Command(users, currentuser);
+        ((Command) au).run();
+
+        System.out.println(currentuser.getUsername());
         ((Command) au).run();
 
     }

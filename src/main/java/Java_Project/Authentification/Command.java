@@ -35,7 +35,14 @@ public class Command extends Authentication{
             }
 
             case Authentificated -> {
-                
+                Scanner scanner = new Scanner(System.in);
+                String command;
+
+                command = scanner.next();
+                if(command.equals("logout")){
+                    Logout l = new Logout(users, currentuser);
+                    l.run();
+                }
                 break;
             }
 
