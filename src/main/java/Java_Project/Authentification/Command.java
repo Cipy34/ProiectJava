@@ -1,9 +1,9 @@
 package Java_Project.Authentification;
 
+import Java_Project.Exceptions.LoginException;
 import Java_Project.User.User;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Command extends Authentication{
@@ -20,24 +20,33 @@ public class Command extends Authentication{
                 String sentence = scanner.nextLine();
 
                 String[] commands = sentence.split("\\s+");
-                if(commands.length != 3)
-                    return "Invalid number of arguments!";
+                if(commands[0].equals("promote")){
+                    throw new LoginException("You do not have the permission to use this!");
+                }
 
                 command = commands[0];
-                username = commands[1];
-                password = commands[2];
 
                 if(command.equals("login")){
+                    if(commands.length != 3)
+                        return "Invalid number of arguments!";
+
+                    username = commands[1];
+                    password = commands[2];
                     Login l = new Login(users, currentuser, username, password);
                     System.out.println(l.run());
+                    return null;
                 }
 
                 if(command.equals("register")){
+                    if(commands.length != 3)
+                        return "Invalid number of arguments!";
+
+                    username = commands[1];
+                    password = commands[2];
                     Register r = new Register(users, currentuser, username, password);
                     System.out.println(r.run());
+                    return null;
                 }
-
-                break;
             }
 
             case Authentificated -> {
@@ -46,15 +55,19 @@ public class Command extends Authentication{
                 String sentence = scanner.nextLine();
 
                 String[] commands = sentence.split("\\s+");
-                if(commands.length != 1)
-                    return "Invalid number of arguments!";
+                if(commands[0].equals("promote")){
+                    throw new LoginException("You do not have the permission to use this!");
+                }
 
                 command = commands[0];
                 if(command.equals("logout")){
+                    if(commands.length != 1)
+                        return "Invalid number of arguments!";
+
                     Logout l = new Logout(users, currentuser);
                     System.out.println(l.run());
+                    return null;
                 }
-                break;
             }
 
             case Administrator -> {
@@ -73,6 +86,7 @@ public class Command extends Authentication{
 
                     Logout l = new Logout(users, currentuser);
                     System.out.println(l.run());
+                    return null;
                 }
 
                 if(command.equals("promote")){
@@ -82,10 +96,10 @@ public class Command extends Authentication{
                     username = commands[1];
                     Promote p = new Promote(users, currentuser, username);
                     System.out.println(p.run());
+                    return null;
                 }
-                break;
             }
         }
-        return "";
+        return "Unknown command";
     }
 }

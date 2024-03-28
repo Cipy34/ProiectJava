@@ -16,8 +16,13 @@ public class Main {
 
         User currentuser = new User();
 
-        Authentication au = new Command(users, currentuser);
-        System.out.println(((Command) au).run());
-        System.out.println(((Command) au).run());
+        Command au = new Command(users, currentuser);
+
+//        if(au.run() != null)
+//            System.out.println(au.run());
+
+        String msg = au.run();
+        if(msg != null)
+            System.out.println(msg);
     }
 }
