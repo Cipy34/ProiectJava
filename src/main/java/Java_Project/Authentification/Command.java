@@ -2,11 +2,12 @@ package Java_Project.Authentification;
 
 import Java_Project.User.User;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Command extends Authentication{
-    public Command(Map<String, String> users, User currentuser) {
+    public Command(List<User> users, User currentuser) {
         super(users, currentuser);
     }
 
@@ -47,7 +48,21 @@ public class Command extends Authentication{
             }
 
             case Administrator -> {
+                Scanner scanner = new Scanner(System.in);
+                String command;
+                String username;
 
+                command = scanner.next();
+                if(command.equals("logout")){
+                    Logout l = new Logout(users, currentuser);
+                    l.run();
+                }
+
+                if(command.equals("promote")){
+                    username = scanner.next();
+                    Promote p = new Promote(users, currentuser, username);
+                    p.run();
+                }
                 break;
             }
         }

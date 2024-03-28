@@ -4,12 +4,13 @@ import Java_Project.Exceptions.LoginException;
 import Java_Project.User.Role;
 import Java_Project.User.User;
 
+import java.util.List;
 import java.util.Map;
 
 public class Register extends Authentication{
     private final String password;
     private final String username;
-    public Register(Map<String, String> users, User currentuser, String username, String password) {
+    public Register(List<User> users, User currentuser, String username, String password) {
         super(users, currentuser);
         this.password = password;
         this.username = username;
@@ -17,15 +18,14 @@ public class Register extends Authentication{
 
     @Override
     void run() {
-        if(!users.containsKey(username)){
-            currentuser.setUsername(username);
-            currentuser.setPassword(password);
-            currentuser.setRole(Role.Authentificated);
+        for(User user : users){
+            if(!user.getUsername().equals(username)) {
+                currentuser.setUsername(username);
+                currentuser.setPassword(password);
+                currentuser.setRole(Role.Authentificated);
 
-            users.put(username, password);
-        }
-        else{
-            throw new LoginException("register error");
+                users.add(new User(username, password, Role.Authentificated));
+            }
         }
     }
 }

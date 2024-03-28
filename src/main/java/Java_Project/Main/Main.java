@@ -5,23 +5,23 @@ import Java_Project.Authentification.Command;
 import Java_Project.User.Role;
 import Java_Project.User.User;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Map<String, String> users = new HashMap<>();
-        users.put("Cipy", "123");
-        users.put("Cipy34", "123");
+        List<User> users = new ArrayList<>();
+        users.add(new User("Cipy", "123", Role.Authentificated));
+        users.add(new User("Cipy34", "123", Role.Authentificated));
+        users.add(new User("Cipy345", "123", Role.Administrator));
 
         User currentuser = new User();
 
         Authentication au = new Command(users, currentuser);
         ((Command) au).run();
 
-        System.out.println(currentuser.getUsername());
+        System.out.println(currentuser.getRole());
         ((Command) au).run();
 
+        System.out.println(users.get(0).getRole());
     }
 }
