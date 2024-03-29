@@ -15,5 +15,5 @@ public abstract class Authentication {
         this.currentuser = currentuser;
     }
 
-    abstract String run();
+    public abstract String run();
 }

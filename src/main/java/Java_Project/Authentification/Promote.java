@@ -6,7 +6,7 @@ import Java_Project.User.User;
 import java.util.List;
 import java.util.Map;
 
-public class Promote extends Authentication{
+public final class Promote extends Authentication{
     private final String username;
     public Promote(List<User> users, User currentuser, String username) {
         super(users, currentuser);

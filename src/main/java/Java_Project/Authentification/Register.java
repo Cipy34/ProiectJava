@@ -7,7 +7,7 @@ import Java_Project.User.User;
 import java.util.List;
 import java.util.Map;
 
-public class Register extends Authentication{
+public final class Register extends Authentication{
     private final String password;
     private final String username;
     public Register(List<User> users, User currentuser, String username, String password) {

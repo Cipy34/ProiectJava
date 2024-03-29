@@ -1,12 +1,13 @@
 package Java_Project.Authentification;
 
 import Java_Project.Exceptions.LoginException;
+import Java_Project.Pagination.Pagination;
 import Java_Project.User.User;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class Command extends Authentication{
+public final class Command extends Authentication{
     public Command(List<User> users, User currentuser) {
         super(users, currentuser);
     }

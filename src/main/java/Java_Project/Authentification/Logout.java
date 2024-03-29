@@ -6,7 +6,7 @@ import Java_Project.User.User;
 import java.util.List;
 import java.util.Map;
 
-public class Logout extends Authentication{
+public final class Logout extends Authentication{
     public Logout(List<User> users, User currentuser) {
         super(users, currentuser);
     }

@@ -2,6 +2,9 @@ package Java_Project.Main;
 
 import Java_Project.Authentification.Authentication;
 import Java_Project.Authentification.Command;
+import Java_Project.Song.Song;
+import Java_Project.SongCommands.CreateSong;
+import Java_Project.SongCommands.SongCommands;
 import Java_Project.User.Role;
 import Java_Project.User.User;
 
@@ -10,19 +13,21 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         List<User> users = new ArrayList<>();
+        List<Song> songs = new ArrayList<>();
         users.add(new User("Cipy", "123", Role.Authentificated));
         users.add(new User("Cipy34", "123", Role.Authentificated));
         users.add(new User("Cipy345", "123", Role.Administrator));
 
-        User currentuser = new User();
+        User currentuser = users.get(0);
 
-        Command au = new Command(users, currentuser);
+//        Command au = new Command(users, currentuser);
+//        String msg = au.run();
+//        if(msg != null)
+//            System.out.println(msg);
 
-//        if(au.run() != null)
-//            System.out.println(au.run());
-
-        String msg = au.run();
-        if(msg != null)
-            System.out.println(msg);
+        Song currentsong = new Song("Tu yo", "Pablo Escobar", 1990, currentuser);
+        SongCommands sc = new CreateSong(songs, currentsong, currentuser);
+        System.out.println(sc.run());
+        System.out.println(songs);
     }
 }
