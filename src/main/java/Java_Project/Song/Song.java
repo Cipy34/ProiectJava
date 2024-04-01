@@ -6,18 +6,14 @@ public final class Song {
     private final String songName;
     private final String authorName;
     private final int year;
-    private static long id = 0;
-    private final User user;
+    private final long id;
+    private static long nextid = 0;
 
-    public Song(String songName, String authorName, int year, User user) {
+    public Song(String songName, String authorName, int year) {
         this.songName = songName;
         this.authorName = authorName;
         this.year = year;
-        this.user = user;
-    }
-
-    public static synchronized void CreateId(){
-        id += 1;
+        this.id = nextid++;
     }
 
     public String getSongName() {
@@ -26,5 +22,13 @@ public final class Song {
 
     public String getAuthorName() {
         return authorName;
+    }
+
+    public long getId(){
+        return id;
+    }
+
+    public int getYear(){
+        return year;
     }
 }

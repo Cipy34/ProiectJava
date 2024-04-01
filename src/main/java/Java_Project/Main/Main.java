@@ -2,6 +2,7 @@ package Java_Project.Main;
 
 import Java_Project.Authentification.Authentication;
 import Java_Project.Authentification.Command;
+import Java_Project.DataBaseCommands.DbCommand;
 import Java_Project.Song.Song;
 import Java_Project.SongCommands.CreateSong;
 import Java_Project.SongCommands.SongCommands;
@@ -13,11 +14,17 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-//        List<User> users = new ArrayList<>();
-//        List<Song> songs = new ArrayList<>();
-//        users.add(new User("Cipy", "123", Role.Authentificated));
-//        users.add(new User("Cipy34", "123", Role.Authentificated));
-//        users.add(new User("Cipy345", "123", Role.Administrator));
+        List<User> users = new ArrayList<>();
+        List<Song> songs = new ArrayList<>();
+        users.add(new User("Cipy", "123", Role.Authentificated));
+        users.add(new User("Cipy34", "123", Role.Authentificated));
+        users.add(new User("Cipy345", "123", Role.Administrator));
+        Song currentsong = new Song("Tu yo", "Pablo Escobar", 1990);
+
+        DbCommand dbc = new DbCommand();
+        //dbc.insertSong(currentsong);
+        //dbc.insertUser(users.get(2));
+        //dbc.resetDataBase();
 //
 //        User currentuser = users.get(0);
 //
@@ -30,18 +37,5 @@ public class Main {
 //        SongCommands sc = new CreateSong(songs, currentsong, currentuser);
 //        System.out.println(sc.run());
 //        System.out.println(songs);
-
-        DBConnection db = new DBConnection();
-        Connection connection = db.connect();
-        Statement statement = connection.createStatement();
-        //int rowsAffected = statement.executeUpdate("INSERT INTO \"User\" (\"UserId\", \"UserName\", \"Password\") VALUES (2, 'test', 'test');");
-        //System.out.println(rowsAffected + " row(s) inserted successfully.");
-        int rows2Affected = statement.executeUpdate("DELETE FROM \"User\";");
-        //System.out.println(rowsAffected + " row(s) inserted successfully.");
-
-
-        statement.close();
-        connection.close();
-
     }
 }

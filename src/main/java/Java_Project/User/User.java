@@ -4,17 +4,21 @@ public class User {
     private String username;
     private String password;
     private Role role;
+    private final long id;
+    private static long nextid = 0;
 
     public User(){
         this.username = "";
         this.password = "";
         this.role = Role.Anonymous;
+        this.id = nextid++;
     }
 
     public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.id = nextid++;
     }
 
     public Role getRole() {
@@ -27,6 +31,9 @@ public class User {
 
     public String getUsername(){
         return username;
+    }
+    public long getId(){
+        return id;
     }
 
     public void setRole(Role role){
