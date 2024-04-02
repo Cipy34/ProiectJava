@@ -23,6 +23,7 @@ public final class DbCommand {
     }
 
     public void resetDataBase() throws SQLException {
+        System.out.println("DataBase has been restarted");
         statement.executeUpdate("DELETE FROM \"User\"");
         statement.executeUpdate("DELETE FROM \"Song\"");
     }

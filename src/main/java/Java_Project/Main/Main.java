@@ -2,6 +2,7 @@ package Java_Project.Main;
 
 import Java_Project.Authentification.Authentication;
 import Java_Project.Authentification.Command;
+import Java_Project.Authentification.Register;
 import Java_Project.DataBaseCommands.DbCommand;
 import Java_Project.Song.Song;
 import Java_Project.SongCommands.CreateSong;
@@ -18,10 +19,14 @@ public class Main {
         List<Song> songs = new ArrayList<>();
         users.add(new User("Cipy", "123", Role.Authentificated));
         users.add(new User("Cipy34", "123", Role.Authentificated));
-        users.add(new User("Cipy345", "123", Role.Administrator));
+        users.add(new User("Cipy", "123", Role.Administrator));
         Song currentsong = new Song("Tu yo", "Pablo Escobar", 1990);
 
-        DbCommand dbc = new DbCommand();
+//        DbCommand dbc = new DbCommand();
+//        dbc.resetDataBase();
+//        User currentuser = new User();
+//        Register au = new Register(users, currentuser, "Cipy1", "123");
+//        System.out.println(au.run());
         //dbc.insertSong(currentsong);
         //dbc.insertUser(users.get(2));
         //dbc.resetDataBase();
@@ -33,8 +38,7 @@ public class Main {
 ////        if(msg != null)
 ////            System.out.println(msg);
 //
-//        Song currentsong = new Song("Tu yo", "Pablo Escobar", 1990, currentuser);
-//        SongCommands sc = new CreateSong(songs, currentsong, currentuser);
+//        SongCommands sc = new CreateSong(songs, currentsong);
 //        System.out.println(sc.run());
 //        System.out.println(songs);
     }

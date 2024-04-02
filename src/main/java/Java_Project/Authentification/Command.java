@@ -4,6 +4,7 @@ import Java_Project.Exceptions.LoginException;
 import Java_Project.Pagination.Pagination;
 import Java_Project.User.User;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +14,7 @@ public final class Command extends Authentication{
     }
 
     @Override
-    public String run() {
+    public String run() throws SQLException {
         switch (currentuser.getRole()){
             case Anonymous -> {
                 Scanner scanner = new Scanner(System.in);
