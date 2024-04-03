@@ -9,7 +9,8 @@ import java.util.Scanner;
 
 public abstract class Authentication {
     protected final List<User> users;
-    protected final User currentuser;
+    protected User currentuser;
+
 
     public Authentication(List<User> users, User currentuser) {
         this.users = users;

@@ -2,6 +2,7 @@ package Java_Project.Authentification;
 
 import Java_Project.Exceptions.LoginException;
 import Java_Project.Pagination.Pagination;
+import Java_Project.User.Role;
 import Java_Project.User.User;
 
 import java.sql.SQLException;
@@ -15,93 +16,86 @@ public final class Command extends Authentication{
 
     @Override
     public String run() throws SQLException {
-        switch (currentuser.getRole()){
-            case Anonymous -> {
-                Scanner scanner = new Scanner(System.in);
-                String command, username, password;
-                String sentence = scanner.nextLine();
+        Scanner scanner = new Scanner(System.in);
+        String line = scanner.nextLine();
+        String[] commands = line.split("\\s+");
+        String command = commands[0].toLowerCase();
+        String username, password;
 
-                String[] commands = sentence.split("\\s+");
-                if(commands[0].equals("promote")){
-                    throw new LoginException("You do not have the permission to use this!");
-                }
+        if(command.equals("quit"))
+            return "quit";
 
-                command = commands[0];
+        switch (command){
+            case "login" -> {
+                if(currentuser.getRole() != Role.Anonymous)
+                    return "You do not have the permission to use this!";
 
-                if(command.equals("login")){
-                    if(commands.length != 3)
-                        return "Invalid number of arguments!";
+                if(commands.length != 3)
+                    return "Invalid number of arguments!";
 
-                    username = commands[1];
-                    password = commands[2];
-                    Login l = new Login(users, currentuser, username, password);
-                    System.out.println(l.run());
-                    return null;
-                }
-
-                if(command.equals("register")){
-                    if(commands.length != 3)
-                        return "Invalid number of arguments!";
-
-                    username = commands[1];
-                    password = commands[2];
-                    Register r = new Register(users, currentuser, username, password);
-                    System.out.println(r.run());
-                    return null;
-                }
+                username = commands[1];
+                password = commands[2];
+                Login l = new Login(users, currentuser, username, password);
+                System.out.println(l.run());
+                return "";
             }
 
-            case Authentificated -> {
-                Scanner scanner = new Scanner(System.in);
-                String command;
-                String sentence = scanner.nextLine();
+            case "register" -> {
+                if(currentuser.getRole() != Role.Anonymous)
+                    return "You do not have the permission to use this!";
 
-                String[] commands = sentence.split("\\s+");
-                if(commands[0].equals("promote")){
-                    throw new LoginException("You do not have the permission to use this!");
-                }
+                if(commands.length != 3)
+                    return "Invalid number of arguments!";
 
-                command = commands[0];
-                if(command.equals("logout")){
-                    if(commands.length != 1)
-                        return "Invalid number of arguments!";
-
-                    Logout l = new Logout(users, currentuser);
-                    System.out.println(l.run());
-                    return null;
-                }
+                username = commands[1];
+                password = commands[2];
+                Register r = new Register(users, currentuser, username, password);
+                System.out.println(r.run());
+                Login l = new Login(users, currentuser, username, password);
+                l.run();
+                return "";
             }
 
-            case Administrator -> {
-                Scanner scanner = new Scanner(System.in);
-                String command;
-                String username;
-                String sentence = scanner.nextLine();
+            case "promote" -> {
+                if(currentuser.getRole() != Role.Administrator)
+                    return "You do not have the permission to use this!";
 
-                String[] commands = sentence.split("\\s+");
+                if(commands.length != 2)
+                    return "Invalid number of arguments!";
 
-                command = commands[0];
+                username = commands[1];
+                Promote p = new Promote(users, currentuser, username);
+                System.out.println(p.run());
+                return "";
+            }
 
-                if(command.equals("logout")){
-                    if(commands.length != 1)
-                        return "Invalid number of arguments!";
+            case "logout" -> {
+                if(currentuser.getRole() == Role.Anonymous)
+                    return "You do not have the permission to use this!";
 
-                    Logout l = new Logout(users, currentuser);
-                    System.out.println(l.run());
-                    return null;
-                }
+                if(commands.length != 1)
+                    return "Invalid number of arguments!";
 
-                if(command.equals("promote")){
-                    if(commands.length != 2)
-                        return "Invalid number of arguments!";
+                Logout l = new Logout(users, currentuser);
+                System.out.println(l.run());
+                return "";
+            }
 
-                    username = commands[1];
-                    Promote p = new Promote(users, currentuser, username);
-                    System.out.println(p.run());
-                    return null;
-                }
+            case "create" -> {
+                if(currentuser.getRole() != Role.Administrator)
+                    return "You do not have the permission to use this!";
+
+                if(commands.length != 5)
+                    return "Invalid number of arguments!";
+
+                if(!commands[1].toLowerCase().equals("song"))
+                    return "Did you meant 'song'? Try again!";
+
+                
+                return "";
             }
         }
+
         return "Unknown command";
     }
 }

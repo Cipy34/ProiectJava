@@ -25,13 +25,18 @@ public final class Register extends Authentication{
                 return "User with given username already exists! Please try again!";
             }
         }
+
+        User aux = new User(username, password, Role.Authentificated);
+        if(aux.getId() == 1)
+            aux.setRole(Role.Administrator);
+
+        currentuser.setRole(aux.getRole());
         currentuser.setUsername(username);
         currentuser.setPassword(password);
-        currentuser.setRole(Role.Authentificated);
 
-        users.add(new User(username, password, Role.Authentificated));
+        users.add(aux);
         DbCommand dbc = new DbCommand();
-        dbc.insertUser(currentuser);
+        dbc.insertUser(aux);
         return "Registered account with user name " + username + ". ";
     }
 }
