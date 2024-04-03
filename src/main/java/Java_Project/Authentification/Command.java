@@ -1,17 +1,25 @@
 package Java_Project.Authentification;
 
-import Java_Project.Exceptions.LoginException;
-import Java_Project.Pagination.Pagination;
+import Java_Project.PlaylistCommands.Add;
+import Java_Project.PlaylistCommands.CreatePlaylist;
+import Java_Project.Song.Playlist;
+import Java_Project.Song.Song;
+import Java_Project.SongCommands.CreateSong;
 import Java_Project.User.Role;
 import Java_Project.User.User;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public final class Command extends Authentication{
-    public Command(List<User> users, User currentuser) {
+    private List<Song> songs;
+    private List<Playlist> playlists;
+    public Command(List<User> users, User currentuser, List<Song> songs, List<Playlist> playlists) {
         super(users, currentuser);
+        this.songs = songs;
+        this.playlists = playlists;
     }
 
     @Override
@@ -82,17 +90,90 @@ public final class Command extends Authentication{
             }
 
             case "create" -> {
-                if(currentuser.getRole() != Role.Administrator)
-                    return "You do not have the permission to use this!";
+                if(commands[1].equalsIgnoreCase("song")){
+                    if(currentuser.getRole() != Role.Administrator)
+                        return "You do not have the permission to use this!";
 
-                if(commands.length != 5)
-                    return "Invalid number of arguments!";
+                    if(commands.length != 5)
+                        return "Invalid number of arguments!";
 
-                if(!commands[1].toLowerCase().equals("song"))
-                    return "Did you meant 'song'? Try again!";
+                    String name = commands[2];
+                    String authorName = commands[3];
+                    int year = Integer.parseInt(commands[4]);
 
-                
+                    Song song = new Song(name, authorName, year);
+                    CreateSong cs = new CreateSong(songs, song);
+                    System.out.println(cs.run());
+                }
+                else if(commands[1].equalsIgnoreCase("playlist")){
+                    if(currentuser.getRole() != Role.Administrator)
+                        return "You do not have the permission to use this!";
+
+                    if(commands.length != 3)
+                        return "Invalid number of arguments!";
+
+                    String name = commands[2];
+
+                    Playlist playlist = new Playlist(name, new ArrayList<>(), currentuser);
+                    CreatePlaylist cp = new CreatePlaylist();
+                    System.out.println(cp.run(name, currentuser, playlists));
+                }
+                else{
+                    return "Unknown command!";
+                }
+
                 return "";
+            }
+
+            case "add" -> {
+                String playlistName;
+                int playlistId;
+                int songId;
+                List<Integer> songIds = new ArrayList<>();
+                Add add = new Add();
+
+                if(commands[1].equalsIgnoreCase("byname")){
+                    playlistName = commands[2];
+
+                    if(commands.length == 4){
+                        songId = Integer.parseInt(commands[3]);
+
+                        return add.run(playlistName, songId, songs, playlists);
+                    }
+                    else if(commands.length > 4){
+                        for(int i = 3; i < commands.length; i++){
+                            songIds.add(Integer.parseInt(commands[i]));
+                        }
+
+                        return add.run(playlistName, songIds, songs, playlists);
+                    }
+                    else{
+                        return "Invalid number of arguments!";
+                    }
+                }
+                else if(commands[1].equalsIgnoreCase("byid")){
+                    try {
+                        playlistId = Integer.parseInt(commands[2]);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid playlist ID: " + commands[2]);
+                        return "";
+                    }
+                    if(commands.length == 4){
+                        songId = Integer.parseInt(commands[3]);
+
+                        return add.run(playlistId, songId, songs, playlists);
+                    }
+                    else if(commands.length > 4){
+                        for(int i = 3; i < commands.length; i++){
+                            songIds.add(Integer.parseInt(commands[i]));
+                        }
+
+                        return add.run(playlistId, songIds, songs, playlists);
+                    }
+                    else{
+                        return "Invalid number of arguments!";
+                    }
+                }
             }
         }
 

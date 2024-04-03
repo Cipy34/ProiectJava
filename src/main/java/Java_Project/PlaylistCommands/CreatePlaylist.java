@@ -9,18 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePlaylist {
-    public void createPlaylist(String name, User currentuser, List<Playlist> playlistLists) throws SQLException {
-        for(Playlist playlistList : playlistLists){
+    public String run(String name, User currentuser, List<Playlist> playlists) throws SQLException {
+        for(Playlist playlistList : playlists){
             if(playlistList.getPlaylistName().equals(name) && playlistList.getCurrentuser() == currentuser){
-                System.out.println("You already have a playlist named " + name);
-                return;
+                return "You already have a playlist named " + name;
             }
         }
 
         Playlist p = new Playlist(name, new ArrayList<>(), currentuser);
         DbCommand dbc = new DbCommand();
         dbc.insertPlaylist(p, currentuser);
-        playlistLists.add(p);
-        System.out.println("Playlist " + name + " was created successfully!");
+        playlists.add(p);
+
+        return "Playlist " + name + " was created successfully!";
     }
 }

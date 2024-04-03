@@ -19,7 +19,10 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         User currentuser = new User();
         List<User> users = new ArrayList<>();
-        Command au = new Command(users, currentuser);
+        List<Song> songs = new ArrayList<>();
+        List<Playlist> playlists = new ArrayList<>();
+
+        Command au = new Command(users, currentuser, songs, playlists);
 
         String k = au.run();
         while(!k.equals("quit")){

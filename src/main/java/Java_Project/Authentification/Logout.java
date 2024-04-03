@@ -4,7 +4,6 @@ import Java_Project.User.Role;
 import Java_Project.User.User;
 
 import java.util.List;
-import java.util.Map;
 
 public final class Logout extends Authentication{
     public Logout(List<User> users, User currentuser) {

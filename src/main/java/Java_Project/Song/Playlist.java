@@ -30,6 +30,10 @@ public final class Playlist {
         return currentuser;
     }
 
+    public List<Song> getSongs(){
+        return songs;
+    }
+
     public void setSongs(List<Song> songs) {
         for(Song song : songs){
             this.songs.add(song);

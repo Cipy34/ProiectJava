@@ -1,13 +1,11 @@
 package Java_Project.Authentification;
 
 import Java_Project.DataBaseCommands.DbCommand;
-import Java_Project.Exceptions.LoginException;
 import Java_Project.User.Role;
 import Java_Project.User.User;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public final class Register extends Authentication{
     private final String password;

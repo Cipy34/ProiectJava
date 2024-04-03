@@ -4,7 +4,6 @@ import Java_Project.User.Role;
 import Java_Project.User.User;
 
 import java.util.List;
-import java.util.Map;
 
 public final class Promote extends Authentication{
     private final String username;
