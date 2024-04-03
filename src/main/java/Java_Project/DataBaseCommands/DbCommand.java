@@ -1,6 +1,7 @@
 package Java_Project.DataBaseCommands;
 
 import Java_Project.Main.DBConnection;
+import Java_Project.Song.Playlist;
 import Java_Project.Song.Song;
 import Java_Project.User.User;
 
@@ -20,6 +21,10 @@ public final class DbCommand {
 
     public void insertSong(Song song) throws SQLException {
         statement.executeUpdate("INSERT INTO \"Song\" VALUES (" + song.getId() + ", '" + song.getSongName() + "', '" + song.getAuthorName() + "', " + song.getYear() + ");");
+    }
+
+    public void insertPlaylist(Playlist playlist, User currentuser) throws SQLException {
+        statement.executeUpdate("INSERT INTO \"Playlist\" VALUES (" + playlist.getId() + ", '" + playlist.getPlaylistName() + "', '" + currentuser.getId() + "');");
     }
 
     public void resetDataBase() throws SQLException {

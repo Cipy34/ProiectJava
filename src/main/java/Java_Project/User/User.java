@@ -4,8 +4,8 @@ public class User {
     private String username;
     private String password;
     private Role role;
-    private final long id;
-    private static long nextid = 0;
+    private final int id;
+    private static int nextid = 0;
 
     public User(){
         this.username = "";
@@ -32,7 +32,7 @@ public class User {
     public String getUsername(){
         return username;
     }
-    public long getId(){
+    public int getId(){
         return id;
     }
 

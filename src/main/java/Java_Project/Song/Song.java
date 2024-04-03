@@ -6,8 +6,8 @@ public final class Song {
     private final String songName;
     private final String authorName;
     private final int year;
-    private final long id;
-    private static long nextid = 0;
+    private final int id;
+    private static int nextid = 0;
 
     public Song(String songName, String authorName, int year) {
         this.songName = songName;
@@ -24,7 +24,7 @@ public final class Song {
         return authorName;
     }
 
-    public long getId(){
+    public int getId(){
         return id;
     }
 
