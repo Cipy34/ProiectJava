@@ -11,6 +11,7 @@ import Java_Project.SongCommands.SongById;
 import Java_Project.SongCommands.SongCommands;
 import Java_Project.User.Role;
 import Java_Project.User.User;
+import Java_Project.Formats.CSV;
 
 import java.sql.*;
 import java.util.*;
@@ -23,6 +24,10 @@ public class Main {
         List<Playlist> playlists = new ArrayList<>();
 
         Command au = new Command(users, currentuser, songs, playlists);
+//        CSV csv = new CSV(songs);
+//        csv.read();
+//        for(Song s : songs)
+//            System.out.println(s.getSongName()); "song" problem
 
         String k = au.run();
         while(!k.equals("quit")){
