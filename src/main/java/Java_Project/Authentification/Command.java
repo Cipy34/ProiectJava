@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public final class Command extends Authentication{
-    private List<Song> songs;
-    private List<Playlist> playlists;
+    private final List<Song> songs;
+    private final List<Playlist> playlists;
     public Command(List<User> users, User currentuser, List<Song> songs, List<Playlist> playlists) {
         super(users, currentuser);
         this.songs = songs;
@@ -114,7 +114,6 @@ public final class Command extends Authentication{
 
                     String name = commands[2];
 
-                    Playlist playlist = new Playlist(name, new ArrayList<>(), currentuser);
                     CreatePlaylist cp = new CreatePlaylist();
                     System.out.println(cp.run(name, currentuser, playlists));
                 }
@@ -131,6 +130,10 @@ public final class Command extends Authentication{
                 int songId;
                 List<Integer> songIds = new ArrayList<>();
                 Add add = new Add();
+                if(currentuser.getRole() == Role.Anonymous)
+                    return "You do not have the permission to use this!";
+                if(commands.length < 4)
+                    return "Invalid number of arguments!";
 
                 if(commands[1].equalsIgnoreCase("byname")){
                     playlistName = commands[2];
@@ -140,15 +143,12 @@ public final class Command extends Authentication{
 
                         return add.run(playlistName, songId, songs, playlists);
                     }
-                    else if(commands.length > 4){
+                    else {
                         for(int i = 3; i < commands.length; i++){
                             songIds.add(Integer.parseInt(commands[i]));
                         }
 
                         return add.run(playlistName, songIds, songs, playlists);
-                    }
-                    else{
-                        return "Invalid number of arguments!";
                     }
                 }
                 else if(commands[1].equalsIgnoreCase("byid")){
@@ -163,17 +163,23 @@ public final class Command extends Authentication{
 
                         return add.run(playlistId, songId, songs, playlists);
                     }
-                    else if(commands.length > 4){
+                    else {
                         for(int i = 3; i < commands.length; i++){
                             songIds.add(Integer.parseInt(commands[i]));
                         }
 
                         return add.run(playlistId, songIds, songs, playlists);
                     }
-                    else{
-                        return "Invalid number of arguments!";
-                    }
                 }
+            }
+
+            case "help" -> {
+                if(currentuser.getRole() == Role.Anonymous)
+                    return "login <username> <password>\nregister <username> <password>";
+                if(currentuser.getRole() == Role.Administrator)
+                    return "logout\naudit <username>\npromote <username>\ncreate song <songname> <authorname> <year>\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>";
+                if(currentuser.getRole() == Role.Authentificated)
+                    return "logout\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>";
             }
         }
 

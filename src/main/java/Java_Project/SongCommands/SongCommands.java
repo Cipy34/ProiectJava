@@ -1,7 +1,6 @@
 package Java_Project.SongCommands;
 
 import Java_Project.Song.Song;
-import Java_Project.User.User;
 
 import java.sql.SQLException;
 import java.util.List;

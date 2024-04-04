@@ -6,7 +6,7 @@ import java.util.List;
 
 public final class Playlist {
     private final String playlistName;
-    private List<Song> songs;
+    private final List<Song> songs;
     private final User currentuser;
     private final int id;
     private static int nextid = 0;
@@ -35,9 +35,7 @@ public final class Playlist {
     }
 
     public void setSongs(List<Song> songs) {
-        for(Song song : songs){
-            this.songs.add(song);
-        }
+        this.songs.addAll(songs);
     }
 
     public void setSongs(Song song){

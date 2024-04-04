@@ -1,7 +1,5 @@
 package Java_Project.Song;
 
-import Java_Project.User.User;
-
 public final class Song {
     private final String songName;
     private final String authorName;
