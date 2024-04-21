@@ -1,5 +1,6 @@
 package Java_Project.Main;
 
+import Java_Project.Audit.Audit;
 import Java_Project.Authentification.Authentication;
 import Java_Project.Authentification.Command;
 import Java_Project.Authentification.Register;
@@ -15,6 +16,7 @@ import Java_Project.SongCommands.SongCommands;
 import Java_Project.User.Role;
 import Java_Project.User.User;
 import Java_Project.Formats.CSV;
+import org.apache.commons.collections.ArrayStack;
 
 import java.io.IOException;
 import java.sql.*;
@@ -26,8 +28,9 @@ public class Main {
         List<User> users = new ArrayList<>();
         List<Song> songs = new ArrayList<>();
         List<Playlist> playlists = new ArrayList<>();
+        List<Audit> audits = new ArrayList<>();
 
-        Command au = new Command(users, currentuser, songs, playlists);
+        Command au = new Command(users, currentuser, songs, playlists, audits);
 
         Backup backup = new Backup();
         backup.run(songs, users, playlists);

@@ -19,6 +19,10 @@ public final class AddFunction {
         list.add(new Function("list", 2, AdminAuth));
         list.add(new Function("export playlist", 2, AdminAuth));
         list.add(new Function("export", 3, AdminAuth));
+        list.add(new Function("search author", 2, AdminAuth));
+        list.add(new Function("search name", 2, AdminAuth));
+        list.add(new Function("search", 3, AdminAuth));
+        list.add(new Function("audit", 2, Administrator));
 
         return list;
     }

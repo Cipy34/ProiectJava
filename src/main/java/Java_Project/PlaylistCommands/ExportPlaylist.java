@@ -21,9 +21,27 @@ public final class ExportPlaylist {
     public void run(String playlistName) throws IOException {
         String fileName = "export_" + currentUser.getUsername() + "_" + playlistName + "_" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json";
         for(Playlist playlist : playlists){
-            if(playlist.getPlaylistName().equals(playlistName)){
+            if(playlist.getPlaylistName().equals(playlistName) && playlist.getCurrentuser().getUsername().equals(currentUser.getUsername())){
                 JSON json = new JSON();
                 json.write(fileName, playlist);
+                break;
+            }
+            else{
+                System.out.println("Playlist " + playlistName + " does not exist!");
+            }
+        }
+    }
+
+    public void run(int playlistId) throws IOException{
+        for(Playlist playlist : playlists){
+            if(playlist.getId() == playlistId && playlist.getCurrentuser().getUsername().equals(currentUser.getUsername())){
+                JSON json = new JSON();
+                String fileName = "export_" + currentUser.getUsername() + "_" + playlist.getPlaylistName() + "_" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json";
+                json.write(fileName, playlist);
+                break;
+            }
+            else{
+                System.out.println("Playlist " + playlistId + " does not exist!");
             }
         }
     }

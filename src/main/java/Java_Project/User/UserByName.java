@@ -1,0 +1,14 @@
+package Java_Project.User;
+
+import java.util.List;
+
+public class UserByName {
+    public User ubn(String userName, List<User> users){
+        for(User user : users){
+            if(user.getUsername().equals(userName)){
+                return user;
+            }
+        }
+        return null;
+    }
+}

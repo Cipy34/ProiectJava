@@ -1,6 +1,7 @@
 package Java_Project.Authentification;
 
-import Java_Project.BackupDataBase.Backup;
+import Java_Project.Audit.AddAudit;
+import Java_Project.Audit.Audit;
 import Java_Project.DataBaseCommands.DbCommand;
 import Java_Project.Formats.SongsCSV;
 import Java_Project.Functions.AddFunction;
@@ -12,8 +13,10 @@ import Java_Project.PlaylistCommands.ExportPlaylist;
 import Java_Project.Song.Playlist;
 import Java_Project.Song.Song;
 import Java_Project.SongCommands.CreateSong;
+import Java_Project.SongCommands.SearchSong;
 import Java_Project.User.Role;
 import Java_Project.User.User;
+import Java_Project.User.UserByName;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -22,15 +25,34 @@ import java.util.*;
 public final class Command extends Authentication{
     private final List<Song> songs;
     private final List<Playlist> playlists;
-    public Command(List<User> users, User currentuser, List<Song> songs, List<Playlist> playlists) {
+    private final List<Audit> audits;
+    public Command(List<User> users, User currentuser, List<Song> songs, List<Playlist> playlists, List<Audit> audits) {
         super(users, currentuser);
         this.songs = songs;
         this.playlists = playlists;
+        this.audits = audits;
     }
 
     private List<String> comm(){
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
+
+        if(currentuser.getRole() != Role.Anonymous){
+            UserByName ubn = new UserByName();
+            int ok = 0;
+            for(Audit audit : audits){
+                if(audit.getCurrentUser().getUsername().equals(currentuser.getUsername())){
+                    ok = 1;
+                }
+            }
+            if(ok == 0){
+                Audit a = new Audit(ubn.ubn(currentuser.getUsername(), users));
+                audits.add(a);
+            }
+            AddAudit aa = new AddAudit();
+            aa.run(line, audits, ubn.ubn(currentuser.getUsername(), users));
+        }
+
         String[] commands = line.split("\\s+");
         List<String> list = new ArrayList<>();
         int prefix2 = 0;
@@ -235,6 +257,59 @@ public final class Command extends Authentication{
             case "export playlist" -> {
                 ExportPlaylist ep = new ExportPlaylist(currentuser, playlists);
                 ep.run(l.get(1));
+                return "Playlist exported";
+            }
+
+            case "export" -> {
+                ExportPlaylist ep = new ExportPlaylist(currentuser, playlists);
+                try{
+                    Integer.parseInt(l.get(2));
+                }
+                catch (NumberFormatException e){
+                    System.err.println("Error parsing integer at index " + l.get(2) + ": " + e.getMessage());
+                    return "";
+                }
+                ep.run(Integer.parseInt(l.get(2)));
+                return "Playlist exported";
+            }
+
+            case "search author" -> {
+                SearchSong ss = new SearchSong(songs);
+                ss.runAuthor(l.get(1));
+                return "";
+            }
+
+            case "search name" -> {
+                SearchSong ss = new SearchSong(songs);
+                ss.run(l.get(1));
+                return "";
+            }
+
+            case "search" -> {
+                SearchSong ss = new SearchSong(songs);
+                try{
+                    Integer.parseInt(l.get(2));
+                }
+                catch (NumberFormatException e){
+                    System.err.println("Error parsing integer at index " + l.get(2) + ": " + e.getMessage());
+                    return "";
+                }
+                if(l.get(1).equalsIgnoreCase("year")){
+                    ss.run(Integer.parseInt(l.get(2)));
+                }
+                if(l.get(1).equalsIgnoreCase("id")){
+                    ss.runId(Integer.parseInt(l.get(2)));
+                }
+                return "";
+            }
+
+            case "audit" -> {
+                for(Audit audit : audits){
+                    if(audit.getCurrentUser().getUsername().equals(l.get(1))){
+                        return l.get(1) + ": " + audit.getCommands();
+                    }
+                }
+                return l.get(1) + " has no commands!"; //paginare
             }
         }
 
