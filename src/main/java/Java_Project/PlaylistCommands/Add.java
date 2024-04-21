@@ -28,23 +28,6 @@ public class Add {
         }
         return true;
     }
-    public String run(String playlistName, int id, List<Song> songs, List<Playlist> playlists){
-        for(Playlist playlist : playlists){
-            if(playlist.getPlaylistName().equals(playlistName)){
-                SongById sbi = new SongById();
-                Song song = sbi.songById(id, songs);
-                if(song != null) {
-                    if (duplicates(playlists, song)) {
-                        playlist.setSongs(song);
-                        return "Added " + song.getSongName() + " by " + song.getAuthorName() + " to " + playlist.getPlaylistName();
-                    } else
-                        return "The song " + song.getSongName() + " by " + song.getAuthorName() + " is already part of " + playlist.getPlaylistName();
-                }
-            }
-        }
-
-        return "The desired playlist does not exist.";
-    }
 
     public String run(String playlistName, List<Integer> ids, List<Song> songs, List<Playlist> playlists){
         for(Playlist playlist : playlists){
@@ -61,25 +44,6 @@ public class Add {
                     }
                 }
 
-            }
-        }
-
-        return "The desired playlist does not exist.";
-    }
-
-    public String run(int playlistId, int id, List<Song> songs, List<Playlist> playlists){
-        for(Playlist playlist : playlists){
-            if(playlist.getId() == playlistId){
-                SongById sbi = new SongById();
-                Song song = sbi.songById(id, songs);
-                if(song != null) {
-                    if (duplicates(playlists, song)) {
-                        playlist.setSongs(song);
-                        return "Added " + song.getSongName() + " by " + song.getAuthorName() + " to " + playlist.getPlaylistName();
-                    } else{
-                        return "The song " + song.getSongName() + " by " + song.getAuthorName() + " is already part of " + playlist.getPlaylistName();
-                    }
-                }
             }
         }
 

@@ -1,5 +1,7 @@
 package Java_Project.Authentification;
 
+import Java_Project.Functions.AddFunction;
+import Java_Project.Functions.Function;
 import Java_Project.PlaylistCommands.Add;
 import Java_Project.PlaylistCommands.CreatePlaylist;
 import Java_Project.Song.Playlist;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringJoiner;
 
 public final class Command extends Authentication{
     private final List<Song> songs;
@@ -22,155 +25,162 @@ public final class Command extends Authentication{
         this.playlists = playlists;
     }
 
-    @Override
-    public String run() throws SQLException {
+    private List<String> comm(){
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
         String[] commands = line.split("\\s+");
-        String command = commands[0].toLowerCase();
-        String username, password;
+        List<String> list = new ArrayList<>();
+        int prefix2 = 0;
+        for(int i = 0; i < commands.length; i++){
+            if(commands[i].charAt(0) == '"'){
+                StringBuilder aux = new StringBuilder();
+                if(commands[i].charAt(commands[i].length() - 1) == '"'){
+                    aux.append(commands[i].substring(1, commands[i].length() - 1));
+                    prefix2 = 1;
+                    list.add(String.valueOf(aux));
+                    continue;
+                }
+                aux.append(commands[i].substring(1));
+                i++;
+                while(commands[i].charAt(commands[i].length() - 1) != '"'){
+                    aux.append(' ');
+                    aux.append(commands[i]);
+                    i++;
+                    if(i == commands.length){
+                        System.out.println("Expected \" at final");
+                        return null;
+                    }
+                }
+                aux.append(' ');
+                aux.append(commands[i].substring(0, commands[i].length() - 1));
+                list.add(String.valueOf(aux));
+                prefix2 = 1;
+            }
+            else{
+                list.add(commands[i]);
+            }
+        }
+        if(prefix2 == 1){
+            list.set(0, list.get(0) + ' ' + list.get(1));
+            for(int i = 2; i < list.size(); i++){
+                list.set(i - 1, list.get(i));
+            }
+            list.remove(list.size()-1);
+        }
+        return list;
+    }
 
-        if(command.equals("quit"))
+    @Override
+    public String run() throws SQLException {
+        List<String> l = comm();
+        if(l.get(0).equalsIgnoreCase("quit")){
             return "quit";
+        }
 
-        switch (command){
-            case "login" -> {
-                if(currentuser.getRole() != Role.Anonymous)
-                    return "You do not have the permission to use this!";
+        List<Function> functions;
+        AddFunction af = new AddFunction();
+        functions = af.setFunction();
 
-                if(commands.length != 3)
+        List<String> pre = new ArrayList<>();
+
+        for(Function function : functions){
+            pre.add(function.getCommand());
+            if(l.get(0).equalsIgnoreCase(function.getCommand())){
+                if(function.getRole() == Role.AdminAuth){
+                    if(currentuser.getRole() != Role.Administrator
+                        && currentuser.getRole() != Role.Authentificated)
+                            return "You do not have the permission to use this!";
+                }
+                else{
+                    if(currentuser.getRole() != function.getRole())
+                        return "You do not have the permission to use this!";
+                }
+
+                if(function.getSize() < 0 && l.size() >= function.getSize()*(-1)
+                        || function.getSize() > 0 && l.size() == function.getSize()){
+
+                }
+                else{
                     return "Invalid number of arguments!";
+                }
+            }
+        }
 
-                username = commands[1];
-                password = commands[2];
-                Login l = new Login(users, currentuser, username, password);
-                System.out.println(l.run());
+        switch (l.get(0).toLowerCase()){
+            case "login" -> {
+                Login log = new Login(users, currentuser, l.get(1), l.get(2));
+                System.out.println(log.run());
                 return "";
             }
 
             case "register" -> {
-                if(currentuser.getRole() != Role.Anonymous)
-                    return "You do not have the permission to use this!";
-
-                if(commands.length != 3)
-                    return "Invalid number of arguments!";
-
-                username = commands[1];
-                password = commands[2];
-                Register r = new Register(users, currentuser, username, password);
+                Register r = new Register(users, currentuser, l.get(1), l.get(2));
                 System.out.println(r.run());
-                Login l = new Login(users, currentuser, username, password);
-                l.run();
+                Login log = new Login(users, currentuser, l.get(1), l.get(2));
+                log.run();
                 return "";
             }
 
             case "promote" -> {
-                if(currentuser.getRole() != Role.Administrator)
-                    return "You do not have the permission to use this!";
-
-                if(commands.length != 2)
-                    return "Invalid number of arguments!";
-
-                username = commands[1];
-                Promote p = new Promote(users, currentuser, username);
-                System.out.println(p.run());
-                return "";
+                Promote p = new Promote(users, currentuser, l.get(1));
+                return p.run();
             }
 
             case "logout" -> {
-                if(currentuser.getRole() == Role.Anonymous)
-                    return "You do not have the permission to use this!";
-
-                if(commands.length != 1)
-                    return "Invalid number of arguments!";
-
-                Logout l = new Logout(users, currentuser);
-                System.out.println(l.run());
-                return "";
+                Logout log = new Logout(users, currentuser);
+                return log.run();
             }
 
-            case "create" -> {
-                if(commands[1].equalsIgnoreCase("song")){
-                    if(currentuser.getRole() != Role.Administrator)
-                        return "You do not have the permission to use this!";
-
-                    if(commands.length != 5)
-                        return "Invalid number of arguments!";
-
-                    String name = commands[2];
-                    String authorName = commands[3];
-                    int year = Integer.parseInt(commands[4]);
-
-                    Song song = new Song(name, authorName, year);
-                    CreateSong cs = new CreateSong(songs, song);
-                    System.out.println(cs.run());
+            case "create song" -> {
+                try{
+                    Integer.parseInt(l.get(3));
                 }
-                else if(commands[1].equalsIgnoreCase("playlist")){
-                    if(currentuser.getRole() != Role.Administrator)
-                        return "You do not have the permission to use this!";
-
-                    if(commands.length != 3)
-                        return "Invalid number of arguments!";
-
-                    String name = commands[2];
-
-                    CreatePlaylist cp = new CreatePlaylist();
-                    System.out.println(cp.run(name, currentuser, playlists));
+                catch (NumberFormatException e){
+                    System.err.println("Error parsing integer at index " + l.get(3) + ": " + e.getMessage());
+                    return "";
                 }
-                else{
-                    return "Unknown command!";
+                Song song = new Song(l.get(1), l.get(2), Integer.parseInt(l.get(3)));
+                CreateSong cs = new CreateSong(songs, song);
+                return cs.run();
+            }
+
+            case "create playlist" -> {
+                CreatePlaylist cp = new CreatePlaylist();
+                return cp.run(l.get(1), currentuser, playlists);
+            }
+
+            case "add byname" -> {
+                List<Integer> ids = new ArrayList<>();
+                for(int i = 2; i < l.size(); i++) {
+                    try{
+                        ids.add(Integer.parseInt(l.get(i)));
+                    }
+                    catch (NumberFormatException e){
+                        System.err.println("Error parsing integer at index " + i + ": " + e.getMessage());
+                        return "";
+                    }
                 }
 
-                return "";
+                Add add = new Add();
+                return add.run(l.get(1), ids, songs, playlists);
             }
 
             case "add" -> {
-                String playlistName;
-                int playlistId;
-                int songId;
-                List<Integer> songIds = new ArrayList<>();
-                Add add = new Add();
-                if(currentuser.getRole() == Role.Anonymous)
-                    return "You do not have the permission to use this!";
-                if(commands.length < 4)
-                    return "Invalid number of arguments!";
-
-                if(commands[1].equalsIgnoreCase("byname")){
-                    playlistName = commands[2];
-
-                    if(commands.length == 4){
-                        songId = Integer.parseInt(commands[3]);
-
-                        return add.run(playlistName, songId, songs, playlists);
+                List<Integer> ids = new ArrayList<>();
+                for(int i = 3; i < l.size(); i++) {
+                    try{
+                        ids.add(Integer.parseInt(l.get(i)));
+                        Integer.parseInt(l.get(2));
                     }
-                    else {
-                        for(int i = 3; i < commands.length; i++){
-                            songIds.add(Integer.parseInt(commands[i]));
-                        }
-
-                        return add.run(playlistName, songIds, songs, playlists);
-                    }
-                }
-                else if(commands[1].equalsIgnoreCase("byid")){
-                    try {
-                        playlistId = Integer.parseInt(commands[2]);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Invalid playlist ID: " + commands[2]);
+                    catch (NumberFormatException e){
+                        System.err.println("Error parsing integer: " + e.getMessage());
                         return "";
                     }
-                    if(commands.length == 4){
-                        songId = Integer.parseInt(commands[3]);
 
-                        return add.run(playlistId, songId, songs, playlists);
-                    }
-                    else {
-                        for(int i = 3; i < commands.length; i++){
-                            songIds.add(Integer.parseInt(commands[i]));
-                        }
-
-                        return add.run(playlistId, songIds, songs, playlists);
-                    }
                 }
+
+                Add add = new Add();
+                return add.run(Integer.parseInt(l.get(2)), ids, songs, playlists);
             }
 
             case "help" -> {
@@ -183,6 +193,7 @@ public final class Command extends Authentication{
             }
         }
 
-        return "Unknown command";
+        return "Unknown Command";
     }
 }
+

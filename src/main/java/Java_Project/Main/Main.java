@@ -27,7 +27,7 @@ public class Main {
 //        CSV csv = new CSV(songs);
 //        csv.read();
 //        for(Song s : songs)
-//            System.out.println(s.getSongName()); "song" problem
+//            System.out.println(s.getSongName());
 
         String k = au.run();
         while(!k.equals("quit")){
