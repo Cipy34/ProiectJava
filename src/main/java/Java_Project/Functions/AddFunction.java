@@ -15,7 +15,8 @@ public final class AddFunction {
         list.add(new Function("create song", 4, Administrator));
         list.add(new Function("create playlist", 2, AdminAuth));
         list.add(new Function("add byname", -3, AdminAuth));
-        list.add(new Function("add byid", -3, AdminAuth));
+        list.add(new Function("add", -4, AdminAuth));
+        list.add(new Function("list", 2, AdminAuth));
 
         return list;
     }

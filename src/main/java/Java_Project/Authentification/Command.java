@@ -1,7 +1,9 @@
 package Java_Project.Authentification;
 
+import Java_Project.DataBaseCommands.DbCommand;
 import Java_Project.Functions.AddFunction;
 import Java_Project.Functions.Function;
+import Java_Project.Pagination.ListPlaylist;
 import Java_Project.PlaylistCommands.Add;
 import Java_Project.PlaylistCommands.CreatePlaylist;
 import Java_Project.Song.Playlist;
@@ -72,6 +74,7 @@ public final class Command extends Authentication{
 
     @Override
     public String run() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
         List<String> l = comm();
         if(l.get(0).equalsIgnoreCase("quit")){
             return "quit";
@@ -145,8 +148,9 @@ public final class Command extends Authentication{
             }
 
             case "create playlist" -> {
+                Playlist playlist = new Playlist(l.get(1), new ArrayList<>(), currentuser);
                 CreatePlaylist cp = new CreatePlaylist();
-                return cp.run(l.get(1), currentuser, playlists);
+                return cp.run(playlist, currentuser, playlists);
             }
 
             case "add byname" -> {
@@ -166,6 +170,8 @@ public final class Command extends Authentication{
             }
 
             case "add" -> {
+                if(!l.get(1).equalsIgnoreCase("byid"))
+                    return "Wrong command";
                 List<Integer> ids = new ArrayList<>();
                 for(int i = 3; i < l.size(); i++) {
                     try{
@@ -183,13 +189,38 @@ public final class Command extends Authentication{
                 return add.run(Integer.parseInt(l.get(2)), ids, songs, playlists);
             }
 
+            case "list" -> {
+                if(!l.get(1).equals("playlists"))
+                    return "Wrong command";
+                System.out.println("Select the number of playlists per page: ");
+                String nrPage = scanner.next();
+                int intNrPage;
+                try{
+                    intNrPage = Integer.parseInt(nrPage);
+                }
+                catch (NumberFormatException e){
+                    System.err.println("Error parsing integer at index " + nrPage + ": " + e.getMessage());
+                    return "";
+                }
+
+                ListPlaylist lp = new ListPlaylist();
+                lp.run(playlists, intNrPage);
+                return "";
+            }
+
             case "help" -> {
                 if(currentuser.getRole() == Role.Anonymous)
                     return "login <username> <password>\nregister <username> <password>";
                 if(currentuser.getRole() == Role.Administrator)
-                    return "logout\naudit <username>\npromote <username>\ncreate song <songname> <authorname> <year>\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>";
+                    return "logout\naudit <username>\npromote <username>\ncreate song <songname> <authorname> <year>\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>\nlist playlist";
                 if(currentuser.getRole() == Role.Authentificated)
-                    return "logout\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>";
+                    return "logout\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>\nlist playlist";
+            }
+
+            case "reset" -> {
+                DbCommand dbc = new DbCommand();
+                dbc.resetDataBase();
+                return "";
             }
         }
 

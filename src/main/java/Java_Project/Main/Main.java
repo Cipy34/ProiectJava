@@ -22,12 +22,23 @@ public class Main {
         List<User> users = new ArrayList<>();
         List<Song> songs = new ArrayList<>();
         List<Playlist> playlists = new ArrayList<>();
+        playlists.add(new Playlist("1", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("21", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("31", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("41", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("51", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("16", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("17", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("18", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("19", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("10", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("11", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("112", new ArrayList<>(), currentuser));
+        playlists.add(new Playlist("113", new ArrayList<>(), currentuser));
+
+
 
         Command au = new Command(users, currentuser, songs, playlists);
-//        CSV csv = new CSV(songs);
-//        csv.read();
-//        for(Song s : songs)
-//            System.out.println(s.getSongName());
 
         String k = au.run();
         while(!k.equals("quit")){
@@ -35,8 +46,6 @@ public class Main {
             k = au.run();
         }
 
-        DbCommand dbc = new DbCommand();
-        dbc.resetDataBase();
         System.out.println("Bye!");
     }
 }

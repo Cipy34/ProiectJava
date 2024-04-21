@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePlaylist {
-    public String run(String name, User currentuser, List<Playlist> playlists) throws SQLException {
+    public String run(Playlist playlist, User currentuser, List<Playlist> playlists) throws SQLException {
+        String name = playlist.getPlaylistName();
         for(Playlist playlistList : playlists){
             if(playlistList.getPlaylistName().equals(name) && playlistList.getCurrentuser() == currentuser){
                 return "You already have a playlist named " + name;
             }
         }
 
-        Playlist p = new Playlist(name, new ArrayList<>(), currentuser);
         DbCommand dbc = new DbCommand();
-        dbc.insertPlaylist(p, currentuser);
-        playlists.add(p);
+        dbc.insertPlaylist(playlist, currentuser);
+        playlists.add(playlist);
 
         return "Playlist " + name + " was created successfully!";
     }
