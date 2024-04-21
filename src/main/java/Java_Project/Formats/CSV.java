@@ -26,7 +26,7 @@ public final class CSV {
             while ((nextRecord = reader.readNext()) != null) {
                 Song song = new Song(nextRecord[0], nextRecord[1], Integer.parseInt(nextRecord[2]));
                 CreateSong cs = new CreateSong(songs, song);
-                cs.run();
+                System.out.println(cs.run());
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();

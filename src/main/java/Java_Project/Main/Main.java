@@ -3,6 +3,7 @@ package Java_Project.Main;
 import Java_Project.Authentification.Authentication;
 import Java_Project.Authentification.Command;
 import Java_Project.Authentification.Register;
+import Java_Project.BackupDataBase.Backup;
 import Java_Project.DataBaseCommands.DbCommand;
 import Java_Project.Song.Playlist;
 import Java_Project.Song.Song;
@@ -22,23 +23,10 @@ public class Main {
         List<User> users = new ArrayList<>();
         List<Song> songs = new ArrayList<>();
         List<Playlist> playlists = new ArrayList<>();
-        playlists.add(new Playlist("1", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("21", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("31", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("41", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("51", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("16", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("17", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("18", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("19", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("10", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("11", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("112", new ArrayList<>(), currentuser));
-        playlists.add(new Playlist("113", new ArrayList<>(), currentuser));
-
-
 
         Command au = new Command(users, currentuser, songs, playlists);
+        Backup backup = new Backup();
+        backup.run(songs, users, playlists);
 
         String k = au.run();
         while(!k.equals("quit")){

@@ -23,7 +23,6 @@ public final class Register extends Authentication{
                 return "User with given username already exists! Please try again!";
             }
         }
-
         User aux = new User(username, password, Role.Authentificated);
         if(aux.getId() == 1)
             aux.setRole(Role.Administrator);
@@ -35,6 +34,8 @@ public final class Register extends Authentication{
         users.add(aux);
         DbCommand dbc = new DbCommand();
         dbc.insertUser(aux);
+        Login log = new Login(users, currentuser, username, password);
+        log.run();
         return "Registered account with user name " + username + ". ";
     }
 }

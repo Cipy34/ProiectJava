@@ -1,6 +1,8 @@
 package Java_Project.Authentification;
 
+import Java_Project.BackupDataBase.Backup;
 import Java_Project.DataBaseCommands.DbCommand;
+import Java_Project.Formats.SongsCSV;
 import Java_Project.Functions.AddFunction;
 import Java_Project.Functions.Function;
 import Java_Project.Pagination.ListPlaylist;
@@ -13,10 +15,7 @@ import Java_Project.User.Role;
 import Java_Project.User.User;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.StringJoiner;
+import java.util.*;
 
 public final class Command extends Authentication{
     private final List<Song> songs;
@@ -118,10 +117,7 @@ public final class Command extends Authentication{
 
             case "register" -> {
                 Register r = new Register(users, currentuser, l.get(1), l.get(2));
-                System.out.println(r.run());
-                Login log = new Login(users, currentuser, l.get(1), l.get(2));
-                log.run();
-                return "";
+                return r.run();
             }
 
             case "promote" -> {
@@ -148,9 +144,14 @@ public final class Command extends Authentication{
             }
 
             case "create playlist" -> {
-                Playlist playlist = new Playlist(l.get(1), new ArrayList<>(), currentuser);
-                CreatePlaylist cp = new CreatePlaylist();
-                return cp.run(playlist, currentuser, playlists);
+                for(User user : users){
+                    if(Objects.equals(user.getUsername(), currentuser.getUsername())){
+                        Playlist playlist = new Playlist(l.get(1), user);
+                        CreatePlaylist cp = new CreatePlaylist();
+                        return cp.run(playlist, user, playlists);
+                    }
+                }
+
             }
 
             case "add byname" -> {
@@ -220,6 +221,12 @@ public final class Command extends Authentication{
             case "reset" -> {
                 DbCommand dbc = new DbCommand();
                 dbc.resetDataBase();
+                return "";
+            }
+
+            case "read" -> {
+                SongsCSV scsv = new SongsCSV();
+                scsv.readSongs(songs);
                 return "";
             }
         }

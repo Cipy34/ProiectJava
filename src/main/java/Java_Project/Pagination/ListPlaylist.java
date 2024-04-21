@@ -5,7 +5,7 @@ import Java_Project.Song.Playlist;
 import java.util.List;
 import java.util.Scanner;
 
-public class ListPlaylist{
+public final class ListPlaylist{
     public void run(List<Playlist> playlists, int nr) {
         int pages;
         if(playlists.size() % nr == 0){
