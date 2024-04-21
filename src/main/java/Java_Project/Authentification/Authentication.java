@@ -2,6 +2,7 @@ package Java_Project.Authentification;
 
 import Java_Project.User.User;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,5 +16,5 @@ public abstract class Authentication {
         this.currentuser = currentuser;
     }
 
-    public abstract String run() throws SQLException;
+    public abstract String run() throws SQLException, IOException;
 }

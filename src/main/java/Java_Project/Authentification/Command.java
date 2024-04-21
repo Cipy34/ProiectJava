@@ -8,12 +8,14 @@ import Java_Project.Functions.Function;
 import Java_Project.Pagination.ListPlaylist;
 import Java_Project.PlaylistCommands.Add;
 import Java_Project.PlaylistCommands.CreatePlaylist;
+import Java_Project.PlaylistCommands.ExportPlaylist;
 import Java_Project.Song.Playlist;
 import Java_Project.Song.Song;
 import Java_Project.SongCommands.CreateSong;
 import Java_Project.User.Role;
 import Java_Project.User.User;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -72,7 +74,7 @@ public final class Command extends Authentication{
     }
 
     @Override
-    public String run() throws SQLException {
+    public String run() throws SQLException, IOException {
         Scanner scanner = new Scanner(System.in);
         List<String> l = comm();
         if(l.get(0).equalsIgnoreCase("quit")){
@@ -228,6 +230,11 @@ public final class Command extends Authentication{
                 SongsCSV scsv = new SongsCSV();
                 scsv.readSongs(songs);
                 return "";
+            }
+
+            case "export playlist" -> {
+                ExportPlaylist ep = new ExportPlaylist(currentuser, playlists);
+                ep.run(l.get(1));
             }
         }
 
