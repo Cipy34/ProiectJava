@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public final class ListPlaylist{
+
+    /**
+     * realizeaza afisarea paginata a playlist-urilor
+     * @param playlists lista de playlist-uri
+     * @param nr numarul de afisari per pagina
+     */
+
     public void run(List<Playlist> playlists, int nr) {
         int pages;
         if(playlists.size() % nr == 0){

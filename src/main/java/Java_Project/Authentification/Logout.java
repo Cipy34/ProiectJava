@@ -10,6 +10,11 @@ public final class Logout extends Authentication{
         super(users, currentuser);
     }
 
+    /**
+     * delogheaza un user
+     * @return
+     */
+
     @Override
     public String run() {
         currentuser.setRole(Role.Anonymous);

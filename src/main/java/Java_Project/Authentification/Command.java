@@ -7,6 +7,7 @@ import Java_Project.Formats.SongsCSV;
 import Java_Project.Functions.AddFunction;
 import Java_Project.Functions.Function;
 import Java_Project.Pagination.ListPlaylist;
+import Java_Project.Pagination.ListAudit;
 import Java_Project.PlaylistCommands.Add;
 import Java_Project.PlaylistCommands.CreatePlaylist;
 import Java_Project.PlaylistCommands.ExportPlaylist;
@@ -32,6 +33,13 @@ public final class Command extends Authentication{
         this.playlists = playlists;
         this.audits = audits;
     }
+
+    /**
+     * functie care citeste linia de comanda si imparte in comenzi diferite, spre exemplu
+     * login username parola -> imparte comanda intr-o lista de string uri
+     * ia cazurile in care sunt "" pentru a nu fi despartite spatiile
+     * @return
+     */
 
     private List<String> comm(){
         Scanner scanner = new Scanner(System.in);
@@ -94,6 +102,13 @@ public final class Command extends Authentication{
         }
         return list;
     }
+
+    /**
+     * functia verifica fiecare comanda, daca exista, daca sunt parametrii corecti sau daca user-ul are permisiunea
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
 
     @Override
     public String run() throws SQLException, IOException {
@@ -237,15 +252,19 @@ public final class Command extends Authentication{
                 if(currentuser.getRole() == Role.Anonymous)
                     return "login <username> <password>\nregister <username> <password>";
                 if(currentuser.getRole() == Role.Administrator)
-                    return "logout\naudit <username>\npromote <username>\ncreate song <songname> <authorname> <year>\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>\nlist playlist";
+                    return "logout\naudit <username>\npromote <username>\ncreate song <songname> <authorname> <year>\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>\nlist playlists";
                 if(currentuser.getRole() == Role.Authentificated)
-                    return "logout\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>\nlist playlist";
+                    return "logout\nsearch <searchcriteria> <searchterm>\ncreate playlist <playlistname>\nadd byname <playlistname> <songid>\nadd byname <playlistname> <songid1> <songid2>...\nadd byid <playlistid> <songid>\nadd byid <playlistid> <songid1> <songid2>...\nexport playlist <playlistname> <format>\nlist playlists";
             }
 
             case "reset" -> {
+                Logout log = new Logout(users, currentuser);
                 DbCommand dbc = new DbCommand();
                 dbc.resetDataBase();
-                return "";
+                songs.clear();
+                users.clear();
+                playlists.clear();
+                return log.run();
             }
 
             case "read" -> {
@@ -304,12 +323,24 @@ public final class Command extends Authentication{
             }
 
             case "audit" -> {
+                ListAudit la = new ListAudit();
                 for(Audit audit : audits){
                     if(audit.getCurrentUser().getUsername().equals(l.get(1))){
-                        return l.get(1) + ": " + audit.getCommands();
+                        System.out.println("Select the number of playlists per page: ");
+                        String nrPage = scanner.next();
+                        int intNrPage;
+                        try{
+                            intNrPage = Integer.parseInt(nrPage);
+                        }
+                        catch (NumberFormatException e){
+                            System.err.println("Error parsing integer at index " + nrPage + ": " + e.getMessage());
+                            return "";
+                        }
+                        la.run(audit.getCommands(), intNrPage);
+                        return "";
                     }
                 }
-                return l.get(1) + " has no commands!"; //paginare
+                return l.get(1) + " has no commands!";
             }
         }
 

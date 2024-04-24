@@ -14,6 +14,11 @@ public final class SearchSong {
         this.songs = songs;
     }
 
+    /**
+     * selecteaza toate melodiile al caror autor incep cu criteriul specific
+     * @param criteria criteriul de selectare
+     */
+
     public void runAuthor(String criteria){
         List<String> result = new ArrayList<>();
         for(Song song : songs){
@@ -37,6 +42,11 @@ public final class SearchSong {
         ListSongs ls = new ListSongs();
         ls.run(result, intNrPage);
     }
+
+    /**
+     * Selecteaza toate melodiile al caror nume incepe cu criteriul specific
+     * @param criteria criteriul de selectare
+     */
 
     public void run(String criteria){
         List<String> result = new ArrayList<>();
@@ -62,6 +72,11 @@ public final class SearchSong {
         ls.run(result, intNrPage);
     }
 
+    /**
+     * Selecteaza toate melodiile aparute in anul respectiv
+     * @param criteria anul lansarii
+     */
+
     public void run(int criteria){
         List<String> result = new ArrayList<>();
         for(Song song : songs){
@@ -85,6 +100,11 @@ public final class SearchSong {
         ListSongs ls = new ListSongs();
         ls.run(result, intNrPage);
     }
+
+    /**
+     * selecteaza melodia care are ca id criteriul specific
+     * @param criteria id ul melodiei
+     */
 
     public void runId(int criteria){
         List<String> result = new ArrayList<>();

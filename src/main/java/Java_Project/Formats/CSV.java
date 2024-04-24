@@ -17,6 +17,10 @@ public final class CSV {
         this.songs = songs;
     }
 
+    /**
+     * realizeaza citirea din fisier csv
+     */
+
     public void read(){
         String csvFilePath = "D:\\facultate\\an 2\\s2\\java\\ProiectJava\\src\\main\\java\\Java_Project\\Input\\songs.csv";
 

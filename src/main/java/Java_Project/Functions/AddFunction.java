@@ -6,6 +6,11 @@ import java.util.List;
 import static Java_Project.User.Role.*;
 
 public final class AddFunction {
+
+    /**
+    Functie pentru adaugarea comenzilor utilizabile
+     */
+
     public List<Function> setFunction(){
         List<Function> list = new ArrayList<>();
         list.add(new Function("login", 3, Anonymous));

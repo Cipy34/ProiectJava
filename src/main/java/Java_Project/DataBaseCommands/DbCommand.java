@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class DbCommand {
-    private final Connection connection; // Connection field
+    private final Connection connection;
 
     public DbCommand() throws SQLException {
-        this.connection = new DBConnection().connect(); // Initialize connection
+        this.connection = new DBConnection().connect();
     }
 
     public void insertUser(User user) throws SQLException {

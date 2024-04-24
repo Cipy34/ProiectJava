@@ -7,6 +7,7 @@ public final class DBConnection {
     private final String username;
     private final String password;
 
+
     public DBConnection() {
         this.url = "jdbc:postgresql://localhost:5432/JavaProjectDB";
         this.username = "postgres";

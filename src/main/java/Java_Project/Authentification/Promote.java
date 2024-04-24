@@ -12,6 +12,11 @@ public final class Promote extends Authentication{
         this.username = username;
     }
 
+    /**
+     * promoveaza un user(primeste functia de admin)
+     * @return
+     */
+
     @Override
     public String run() {
         for(User user : users){

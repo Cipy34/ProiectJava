@@ -13,6 +13,11 @@ public final class Login extends Authentication {
         this.password = password;
     }
 
+    /**
+     * logheaza un user
+     * @return
+     */
+
     @Override
     public String run() {
         for(User user : users){

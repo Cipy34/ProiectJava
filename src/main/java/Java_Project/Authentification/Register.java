@@ -16,6 +16,12 @@ public final class Register extends Authentication{
         this.username = username;
     }
 
+    /**
+     * realizeaza inregistrarea unui user si il logheaza automat
+     * @return
+     * @throws SQLException
+     */
+
     @Override
     public String run() throws SQLException {
         for(User user : users){
@@ -24,7 +30,7 @@ public final class Register extends Authentication{
             }
         }
         User aux = new User(username, password, Role.Authentificated);
-        if(aux.getId() == 1)
+        if(users.size() == 0)
             aux.setRole(Role.Administrator);
 
         currentuser.setRole(aux.getRole());

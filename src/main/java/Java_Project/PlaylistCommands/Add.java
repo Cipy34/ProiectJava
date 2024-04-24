@@ -7,15 +7,13 @@ import Java_Project.SongCommands.SongById;
 import java.util.List;
 
 public class Add {
-    public boolean duplicates(List<Playlist> playlists, Song song){
-        for(Playlist playlist : playlists){
-            for(Song csong : playlist.getSongs()){
-                if(csong == song)
-                    return false;
-            }
-        }
-        return true;
-    }
+
+    /**
+     * verifica daca exista deja melodia in playlist
+     * @param playlists lista de playlist uri
+     * @param songs lista de melodii
+     * @return
+     */
 
     public boolean duplicates(List<Playlist> playlists, List<Song> songs){
         for(Playlist playlist : playlists){
@@ -28,6 +26,15 @@ public class Add {
         }
         return true;
     }
+
+    /**
+     * Adauga melodii in playlist byName
+     * @param playlistName numele playlist ului in care sunt adaugate melodiile
+     * @param ids id-urile melodiilor
+     * @param songs lista de melodii
+     * @param playlists lista de playlist-uri
+     * @return
+     */
 
     public String run(String playlistName, List<Integer> ids, List<Song> songs, List<Playlist> playlists){
         for(Playlist playlist : playlists){
@@ -49,6 +56,16 @@ public class Add {
 
         return "The desired playlist does not exist.";
     }
+
+    /**
+     * Adauga melodii in playlist byId
+     * @param playlistId id ul playlist ului in care sunt adaugate melodiile
+     * @param ids id-urile melodiilor
+     * @param songs lista de melodii
+     * @param playlists lista de playlist-uri
+     * @return
+     */
+
 
     public String run(int playlistId, List<Integer> ids, List<Song> songs, List<Playlist> playlists){
         for(Playlist playlist : playlists){

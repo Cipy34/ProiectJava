@@ -5,6 +5,14 @@ import Java_Project.Song.Song;
 import java.util.*;
 
 public final class SongById {
+
+    /**
+     * returneaza un obiect al clasei Song din lista songs care are id-ul dat ca criteriu
+     * @param id criteriul de selectare
+     * @param songs lista de melodii
+     * @return
+     */
+
     public Song songById(int id, List<Song> songs){
         Song currentsong = null;
 
@@ -19,6 +27,13 @@ public final class SongById {
         }
         return currentsong;
     }
+
+    /**
+     * Selecteaza o lista de Songs in functie de id-urile date ca parametru
+     * @param ids id-urile pentru care se returneaza lista de Songs
+     * @param songs lista de melodii
+     * @return
+     */
 
     public List<Song> songById(List<Integer> ids, List<Song> songs){
         Set<Integer> set = new HashSet<>();

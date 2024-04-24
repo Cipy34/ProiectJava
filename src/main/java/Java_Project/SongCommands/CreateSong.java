@@ -11,6 +11,12 @@ public final class CreateSong extends SongCommands{
         super(songs, currentsong);
     }
 
+    /**
+     * creeaza o melodie noua si verifica daca aceasta exista
+     * @return
+     * @throws SQLException
+     */
+
     @Override
     public String run() throws SQLException {
         for(Song song : songs){

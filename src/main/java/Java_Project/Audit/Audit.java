@@ -2,31 +2,32 @@ package Java_Project.Audit;
 
 import Java_Project.User.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Audit {
     private final User currentUser;
-    private String commands;
+    private List<String> commands;
 
     public Audit(User currentUser) {
         this.currentUser = currentUser;
-        commands = "";
+        this.commands = new ArrayList<>();
     }
 
-    public void addCommand(String command){
-        if(!commands.isEmpty()){
-            commands = commands.substring(0, commands.length()-1) + ", ";
-        }else{
-            commands += "{";
-        }
+    /**
+     * face adaugarea propriu zisa a comenzii in lista de string-uri a user-ului
+     * @param command comanda scrisa de user
+     */
 
-        commands += command;
-        commands += "}";
+    public void addCommand(String command){
+        commands.add(command);
     }
 
     public User getCurrentUser(){
         return currentUser;
     }
 
-    public String getCommands(){
+    public List<String> getCommands(){
         return commands;
     }
 }

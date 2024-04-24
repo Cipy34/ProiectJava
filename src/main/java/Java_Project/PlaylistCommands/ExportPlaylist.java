@@ -18,6 +18,13 @@ public final class ExportPlaylist {
         this.playlists = playlists;
     }
 
+    /**
+     * Exporteaza un playlist byName (afiseaza intr un fisier json)
+     * @param playlistName numele playlist ului exportat
+     * @throws IOException
+     */
+
+
     public void run(String playlistName) throws IOException {
         String fileName = "export_" + currentUser.getUsername() + "_" + playlistName + "_" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".json";
         for(Playlist playlist : playlists){
@@ -31,6 +38,12 @@ public final class ExportPlaylist {
             }
         }
     }
+
+    /**
+     * Exporteaza un playlist byId (afiseaza intr un fisier json)
+     * @param playlistId id ul playlist ului care trebuie exportat
+     * @throws IOException
+     */
 
     public void run(int playlistId) throws IOException{
         for(Playlist playlist : playlists){

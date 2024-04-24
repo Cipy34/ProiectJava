@@ -8,6 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class JSON {
+
+    /**
+     * functie pentru afisarea intr-un fisier json a playlist-urilor exportate
+     * @param fileName numele fisierului in care afiseaza(este generat in functie de nume, username si data)
+     * @param playlist playlist ul exportat
+     * @throws IOException
+     */
+
     public void write(String fileName, Playlist playlist) throws IOException {
         JSONObject obj = new JSONObject();
 //        obj.put("Playlist Name", "Name");

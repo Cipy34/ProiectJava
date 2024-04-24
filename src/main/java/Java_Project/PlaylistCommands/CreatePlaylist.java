@@ -9,6 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePlaylist {
+
+    /**
+     * Creeaza un playlist nou si verifica daca exista deja
+     * @param playlist playlist ul care trebuie adaugat
+     * @param currentuser utilizatorul care doreste adaugarea unui playlist
+     * @param playlists lista de playlist uri
+     * @return
+     * @throws SQLException
+     */
+
     public String run(Playlist playlist, User currentuser, List<Playlist> playlists) throws SQLException {
         String name = playlist.getPlaylistName();
         for(Playlist playlistList : playlists){
